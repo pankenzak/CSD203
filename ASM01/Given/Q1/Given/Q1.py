@@ -108,12 +108,24 @@ class PlaylistCLL:
         # ---------------------------------------------------------
 
     def reverse_playlist(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
+        if self.is_empty() or self.tail.next == self.tail:
+            return
 
-    def display(self):
+        prev = self.tail
+        current = self.tail.next
+        first = current
+
+        while True:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+            if current == first:
+                break
+
+        self.tail = first
+
+ def display(self):
         print("Playlist (CLL):")
         if self.is_empty():
             print("Empty")
