@@ -43,21 +43,16 @@ class PlayNextQueue:
             self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
 
     def enqueue(self, song):
-        new_node = Node(song)
-        if self.is_empty():
-            self.front = self.rear = new_node
-        else:
-            self.rear.next = new_node
-            self.rear = new_node
+        # You should write here appropriate statements to complete this function.
+        # --------------------------------------------------------
+        pass
+        # ---------------------------------------------------------
 
     def dequeue(self):
-        if self.is_empty():
-            return None
-        removed = self.front.info
-        self.front = self.front.next
-        if self.front is None:
-            self.rear = None
-        return removed
+        # You should write here appropriate statements to complete this function.
+        # --------------------------------------------------------
+        pass
+        # ---------------------------------------------------------
         
     def display(self):
         print("Play Next Queue:")
@@ -93,49 +88,24 @@ class PlaylistCLL:
             self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
 
     def add_to_playlist(self, song):
-        new_node = Node(song)
-        if self.is_empty():
-            self.tail = new_node
-            self.tail.next = self.tail
-        else:
-            new_node.next = self.tail.next
-            self.tail.next = new_node
-            self.tail = new_node
+        # You should write here appropriate statements to complete this function.
+        # --------------------------------------------------------
+        pass
+        # ---------------------------------------------------------
 
     def search_by_artist(self, artist_name):
         found_songs = []
-        if self.is_empty():
-            return found_songs
-
-        current = self.tail.next
-        while True:
-            if current.info.artist == artist_name:
-                found_songs.append(current.info)
-            current = current.next
-            if current == self.tail.next:
-                break
+        # You should write here appropriate statements to complete this function.
+        # --------------------------------------------------------
+        pass
+        # ---------------------------------------------------------
         return found_songs
 
     def remove_from_playlist(self, song_id):
-        if self.is_empty():
-            return
-
-        current = self.tail.next
-        prev = self.tail
-
-        while True:
-            if current.info.song_id == song_id:
-                if current == self.tail and current == self.tail.next:
-                    self.tail = None
-                else:
-                    prev.next = current.next
-                    if current == self.tail:
-                        self.tail = prev
-                return
-            prev = current
-            current = current.next
-            if current == self.tail.next:
-                break
+        # You should write here appropriate statements to complete this function.
+        # --------------------------------------------------------
+        pass
+        # ---------------------------------------------------------
 
     def reverse_playlist(self):
         if self.is_empty() or self.tail.next == self.tail:
@@ -155,7 +125,7 @@ class PlaylistCLL:
 
         self.tail = first
 
-    def display(self):
+ def display(self):
         print("Playlist (CLL):")
         if self.is_empty():
             print("Empty")
@@ -296,6 +266,4 @@ def main():
 # --------------------------------
 if __name__ == "__main__":
     main()
-
 # ================================
-
