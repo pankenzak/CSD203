@@ -97,6 +97,15 @@ class PlaylistCLL:
         found_songs = []
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
+        if self.is_empty():
+            return found_songs 
+        current = self.tail.next # con tro tai head
+        while True : # tao vong lap vo han 
+            if current.info.artist.strip().lower() == artist_name.strip().lower():# cho artist va artist_name deu in thuong de de so sanh
+                found_songs.append(current.info)
+            current = current.next 
+            if current == self.tail.next:
+                break
         pass
         # ---------------------------------------------------------
         return found_songs
@@ -254,5 +263,4 @@ def main():
 # --------------------------------
 if __name__ == "__main__":
     main()
-
 # ================================
