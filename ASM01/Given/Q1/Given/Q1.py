@@ -45,7 +45,7 @@ class PlayNextQueue:
     def enqueue(self, song):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        pass
+        self.helper_fn(song) #Su dung helper_fn co san va them vao rear
         # ---------------------------------------------------------
 
     def dequeue(self):
@@ -90,13 +90,22 @@ class PlaylistCLL:
     def add_to_playlist(self, song):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        pass
+        self.helper_fn(song) #Su dung helper_fn co san va them vao cuoi
         # ---------------------------------------------------------
 
     def search_by_artist(self, artist_name):
         found_songs = []
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
+        if self.is_empty():
+            return found_songs 
+        current = self.tail.next # con tro tai head
+        while True : # tao vong lap vo han 
+            if current.info.artist.strip().lower() == artist_name.strip().lower():# cho artist va artist_name deu in thuong de de so sanh
+                found_songs.append(current.info)
+            current = current.next 
+            if current == self.tail.next:
+                break
         pass
         # ---------------------------------------------------------
         return found_songs
