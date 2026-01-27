@@ -45,15 +45,24 @@ class PlayNextQueue:
     def enqueue(self, song):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        self.helper_fn(song) #Su dung helper_fn co san va them vao rear
+        self.helper_fn(song) #Su dung helper_fn co san va them node
         # ---------------------------------------------------------
 
     def dequeue(self):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        pass
+        if self.is_empty():
+            return None
+
+        removed_node = self.front
+        self.front = self.front.next
+
+        if self.front is None:
+            self.rear = None
+
+        return removed_node.info
         # ---------------------------------------------------------
-        
+    
     def display(self):
         print("Play Next Queue:")
         if self.is_empty():
@@ -113,7 +122,28 @@ class PlaylistCLL:
     def remove_from_playlist(self, song_id):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        pass
+        if self.is_empty():
+            return
+
+        current = self.tail.next
+        prev = self.tail
+
+        while True:
+            if current.info.song_id == song_id:
+                # only one node
+                if current == self.tail and current.next == self.tail:
+                    self.tail = None
+                else:
+                    prev.next = current.next
+                    if current == self.tail:
+                        self.tail = prev
+                return
+
+            prev = current
+            current = current.next
+
+            if current == self.tail.next:
+                break
         # ---------------------------------------------------------
 
     def reverse_playlist(self):
@@ -276,5 +306,3 @@ def main():
 if __name__ == "__main__":
     main()
 # ================================
-
-
