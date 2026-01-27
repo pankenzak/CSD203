@@ -42,18 +42,23 @@ class PlayNextQueue:
             song_info = queue_data[i]
             self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
 
-    def enqueue(self, song):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-
+    # ===================== Q3 =====================
     def dequeue(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
+        if self.is_empty():
+            return None
+
+        removed_node = self.front
+        self.front = self.front.next
+
+        if self.front is None:
+            self.rear = None
+
+        return removed_node.info
+    # ==============================================
+
+    def enqueue(self, song):
         pass
-        # ---------------------------------------------------------
-        
+
     def display(self):
         print("Play Next Queue:")
         if self.is_empty():
@@ -88,30 +93,41 @@ class PlaylistCLL:
             self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
 
     def add_to_playlist(self, song):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
         pass
-        # ---------------------------------------------------------
 
     def search_by_artist(self, artist_name):
         found_songs = []
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
         pass
-        # ---------------------------------------------------------
         return found_songs
 
+    # ===================== Q3 =====================
     def remove_from_playlist(self, song_id):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
+        if self.is_empty():
+            return
+
+        current = self.tail.next
+        prev = self.tail
+
+        while True:
+            if current.info.song_id == song_id:
+                # only one node
+                if current == self.tail and current.next == self.tail:
+                    self.tail = None
+                else:
+                    prev.next = current.next
+                    if current == self.tail:
+                        self.tail = prev
+                return
+
+            prev = current
+            current = current.next
+
+            if current == self.tail.next:
+                break
+    # ==============================================
 
     def reverse_playlist(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
         pass
-        # ---------------------------------------------------------
 
     def display(self):
         print("Playlist (CLL):")
@@ -167,7 +183,6 @@ class MusicPlayer:
 
 
 # ========================DO NOT EDIT GIVEN STATEMENTS IN THE MAIN FUNCTION.============================
-# ===IF YOU CHANGE, THE GRADING SOFTWARE CAN NOT FIND THE OUTPUT RESULT TO SCORE, THUS THE MARK IS 0.===
 def main():
     player = MusicPlayer()
 
@@ -250,9 +265,8 @@ def main():
     else:
         print("Invalid selection.")
 
-# End main
-# --------------------------------
 if __name__ == "__main__":
     main()
-
 # ================================
+
+
