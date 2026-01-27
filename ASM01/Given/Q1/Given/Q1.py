@@ -1,257 +1,429 @@
-# ========================HELPER FUNCTION (DO NOT EDIT)============================
-def read_file(file_path):
-    try:
-        with open(file_path, 'r') as file:
-            line = file.readline()
-        return eval(line.strip())
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
+class Node:                                  # lớp Node
+    def __init__(self, data):
+        self.data = data                     # giá trị node
+        self.prev = None                     # trỏ về node trước
+        self.next = None                     # trỏ đến node sau
+
+
+class DoublyLinkedList:                      # danh sách liên kết đôi
+    def __init__(self):
+        self.head = None                     # node đầu
+        self.tail = None                     # node cuối
+
+
+    # 1. Thêm vào đầu danh sách
+    def addToHead(self, x):
+        newNode = Node(x)
+        if self.head is None:
+            self.head = self.tail = newNode
+        else:
+            newNode.next = self.head
+            self.head.prev = newNode
+            self.head = newNode
+
+
+    # 2. Thêm vào cuối danh sách
+    def addToTail(self, x):
+        newNode = Node(x)
+        if self.tail is None:
+            self.head = self.tail = newNode
+        else:
+            self.tail.next = newNode
+            newNode.prev = self.tail
+            self.tail = newNode
+
+
+    # 3. Thêm x sau node p
+    def addAfter(self, p, x):
+        if p is None:
+            return
+        newNode = Node(x)
+        newNode.next = p.next
+        newNode.prev = p
+        if p.next:
+            p.next.prev = newNode
+        else:
+            self.tail = newNode
+        p.next = newNode
+
+
+    # 4. Duyệt và in danh sách
+    def traverse(self):
+        current = self.head
+        while current:
+            print(current.data, end=" ")
+            current = current.next
+        print()
+
+
+    # 5. Xóa node đầu
+    def deleteFromHead(self):
+        if self.head is None:
+            return None
+        value = self.head.data
+        self.head = self.head.next
+        if self.head:
+            self.head.prev = None
+        else:
+            self.tail = None
+        return value
+
+
+    # 6. Xóa node cuối
+    def deleteFromTail(self):
+        if self.tail is None:
+            return None
+        value = self.tail.data
+        self.tail = self.tail.prev
+        if self.tail:
+            self.tail.next = None
+        else:
+            self.head = None
+        return value
+
+
+    # 7. Xóa node sau p
+    def deleteAfter(self, p):
+        if p is None or p.next is None:
+            return None
+        temp = p.next
+        value = temp.data
+        p.next = temp.next
+        if temp.next:
+            temp.next.prev = p
+        else:
+            self.tail = p
+        return value
+
+
+    # 8. Xóa node có giá trị x
+    def delValue(self, x):
+        current = self.head
+        while current:
+            if current.data == x:
+                self.delNode(current)
+                return True
+            current = current.next
+        return False
+
+
+    # 9. Tìm VỊ TRÍ (index) của node có giá trị x
+    def searchIndex(self, x):
+        current = self.head
+        index = 0
+        while current:
+            if current.data == x:
+                return index
+            current = current.next
+            index += 1
+        return -1
+
+
+    # (phụ) Tìm NODE có giá trị x
+    def searchNode(self, x):
+        current = self.head
+        while current:
+            if current.data == x:
+                return current
+            current = current.next
         return None
-    except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
-        return None
-# =================================================================================
 
-class Song:
-    def __init__(self, song_id=None, title=None, artist=None, duration=None):
-        self.song_id = song_id
-        self.title = title
-        self.artist = artist
-        self.duration = duration
 
-    def __str__(self):
-        return f"({self.song_id}, {self.title}, {self.artist}, {self.duration})"
+    # 10. Đếm số node
+    def count(self):
+        c = 0
+        current = self.head
+        while current:
+            c += 1
+            current = current.next
+        return c
 
-class Node:
-    def __init__(self, info):
-        self.info = info
-        self.next = None
 
-class PlayNextQueue:
-    def __init__(self):
-        self.front = None
-        self.rear = None
+    # 11. Xóa node tại vị trí i
+    def delAt(self, i):
+        if i < 0:
+            return
+        current = self.head
+        index = 0
+        while current:
+            if index == i:
+                self.delNode(current)
+                return
+            index += 1
+            current = current.next
 
-    def is_empty(self):
-        return self.front is None
 
-    def load_data(self, file_path, size):
-        data = read_file(file_path)
-        queue_data = data[0]
-        for i in range(min(size, len(queue_data))):
-            song_info = queue_data[i]
-            self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
+    # 12. Sắp xếp tăng dần
+    def sort(self):
+        i = self.head
+        while i:
+            j = i.next
+            while j:
+                if i.data > j.data:
+                    i.data, j.data = j.data, i.data
+                j = j.next
+            i = i.next
 
-    def enqueue(self, song):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
 
-    def dequeue(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-        
-    def display(self):
-        print("Play Next Queue:")
-        if self.is_empty():
-            print("Empty")
+    # 13. Xóa node p
+    def delNode(self, p):
+        if p is None:
+            return
+        if p.prev:
+            p.prev.next = p.next
         else:
-            current = self.front
-            while current:
-                print(current.info)
-                current = current.next
-        print("=========")
+            self.head = p.next
+        if p.next:
+            p.next.prev = p.prev
+        else:
+            self.tail = p.prev
+
+
+    # 14. Chuyển sang mảng
+    def toArray(self):
+        arr = []
+        current = self.head
+        while current:
+            arr.append(current.data)
+            current = current.next
+        return arr
+
+
+    # 15. Gộp hai danh sách đã sắp xếp
+    def merge(self, other):
+        result = DoublyLinkedList()
+        a = self.head
+        b = other.head
+        while a and b:
+            if a.data <= b.data:
+                result.addToTail(a.data)
+                a = a.next
+            else:
+                result.addToTail(b.data)
+                b = b.next
+        while a:
+            result.addToTail(a.data)
+            a = a.next
+        while b:
+            result.addToTail(b.data)
+            b = b.next
+        return result
+
+
+    # 16. Thêm x trước node p
+    def addBefore(self, p, x):
+        if p is None:
+            return
+        newNode = Node(x)
+        newNode.next = p
+        newNode.prev = p.prev
+        if p.prev:
+            p.prev.next = newNode
+        else:
+            self.head = newNode
+        p.prev = newNode
+
+
+    # 17. Nối danh sách other vào cuối
+    def attach(self, other):
+        if self.tail:
+            self.tail.next = other.head
+            if other.head:
+                other.head.prev = self.tail
+            self.tail = other.tail
+        else:
+            self.head = other.head
+            self.tail = other.tail
+
+
+    # 18. Giá trị lớn nhất
+    def max(self):
+        if self.head is None:
+            return None
+        m = self.head.data
+        current = self.head.next
+        while current:
+            if current.data > m:
+                m = current.data
+            current = current.next
+        return m
+
+
+    # 19. Giá trị nhỏ nhất
+    def min(self):
+        if self.head is None:
+            return None
+        m = self.head.data
+        current = self.head.next
+        while current:
+            if current.data < m:
+                m = current.data
+            current = current.next
+        return m
+
+
+    # 20. Tổng các phần tử
+    def sum(self):
+        s = 0
+        current = self.head
+        while current:
+            s += current.data
+            current = current.next
+        return s
+
+
+    # 21. Trung bình
+    def avg(self):
+        if self.count() == 0:
+            return 0
+        return self.sum() / self.count()
+
+
+    # 22. Kiểm tra đã sắp xếp chưa
+    def isSorted(self):
+        current = self.head
+        while current and current.next:
+            if current.data > current.next.data:
+                return False
+            current = current.next
+        return True
+
+
+    # 23. Chèn x đúng vị trí
+    def insert(self, x):
+        if self.head is None or x <= self.head.data:
+            self.addToHead(x)
+            return
+        current = self.head
+        while current.next and current.next.data < x:
+            current = current.next
+        self.addAfter(current, x)
+
+
+    # 24. Đảo ngược danh sách
+    def reverse(self):
+        current = self.head
+        while current:
+            current.prev, current.next = current.next, current.prev
+            current = current.prev
+        self.head, self.tail = self.tail, self.head
+
+
+    # 25. So sánh hai danh sách
+    def equals(self, other):
+        a = self.head
+        b = other.head
+        while a and b:
+            if a.data != b.data:
+                return False
+            a = a.next
+            b = b.next
+        return a is None and b is None
     
-    def helper_fn(self, song):
-        new_node = Node(song)
-        if self.is_empty():
-            self.front = self.rear = new_node
-        else:
-            self.rear.next = new_node
-            self.rear = new_node
-
-class PlaylistCLL:
-    def __init__(self):
-        self.tail = None
-
-    def is_empty(self):
-        return self.tail is None
-
-    def load_data(self, file_path, size):
-        data = read_file(file_path)
-        playlist_data = data[1]
-        for i in range(min(size, len(playlist_data))):
-            song_info = playlist_data[i]
-            self.helper_fn(Song(song_info[0], song_info[1], song_info[2], song_info[3]))
-
-    def add_to_playlist(self, song):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-
-    def search_by_artist(self, artist_name):
-        found_songs = []
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-        return found_songs
-
-    def remove_from_playlist(self, song_id):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-
-    def reverse_playlist(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
-
-    def display(self):
-        print("Playlist (CLL):")
-        if self.is_empty():
-            print("Empty")
-        else:
-            current = self.tail.next
-            while True:
-                print(current.info)
-                current = current.next
-                if current == self.tail.next:
-                    break
-        print("=========")
-    
-    def helper_fn(self, song):
-        new_node = Node(song)
-        if self.is_empty():
-            self.tail = new_node
-            self.tail.next = self.tail
-        else:
-            new_node.next = self.tail.next
-            self.tail.next = new_node
-            self.tail = new_node
-
-
-class MusicPlayer:
-    def __init__(self):
-        self.play_next_queue = PlayNextQueue()
-        self.playlist_cll = PlaylistCLL()
-
-    def load(self, file_path, m):
-        self.play_next_queue.load_data(file_path, m)
-        self.playlist_cll.load_data(file_path, m)
-
-    def display(self):
-        self.play_next_queue.display()
-        self.playlist_cll.display()
-
-    def f1(self, artist_name):
-        return self.playlist_cll.search_by_artist(artist_name)
-
-    def f2(self, song_for_playlist, song_for_queue):
-        self.playlist_cll.add_to_playlist(song_for_playlist)
-        self.play_next_queue.enqueue(song_for_queue)
-
-    def f3(self, song_id_to_remove):
-        dequeued_song = self.play_next_queue.dequeue()
-        self.playlist_cll.remove_from_playlist(song_id_to_remove)
-        return dequeued_song
-
-    def f4(self):
-        self.playlist_cll.reverse_playlist()
-
-
-# ========================DO NOT EDIT GIVEN STATEMENTS IN THE MAIN FUNCTION.============================
-# ===IF YOU CHANGE, THE GRADING SOFTWARE CAN NOT FIND THE OUTPUT RESULT TO SCORE, THUS THE MARK IS 0.===
 def main():
-    player = MusicPlayer()
+    dll = DoublyLinkedList()
 
-    file_path = input("Please input file name (ex: data.txt):  ")
+    dll.addToHead(10)
+    print("(1) addToHead – Thêm một phần tử 10 ĐẦU danh sách:", end=" ")
+    dll.traverse()
 
-    initial_data = read_file(file_path)
-    
-    max_queue_size = len(initial_data[0])
-    max_playlist_size = len(initial_data[1])
-    max_size = max(max_queue_size, max_playlist_size)
-    
-    prompt = f"Input the data size (from 0 to {max_size}):\nm =   "
-    m = int(input(prompt))
-    while not (0 <= m <= max_size):
-        m = int(input(f"Please input a size from 0 to {max_size}:\nm =   "))
-    
+    dll.addToHead(11)
+    print("(1) addToHead – Thêm một phần tử 11 ĐẦU danh sách:", end=" ")
+    dll.traverse()
 
-    print("\nSelect a function to run:")
-    print("1. Run f1() - Search by Artist")
-    print("2. Run f2() - Add New Songs")
-    print("3. Run f3() - Remove Songs")
-    print("4. Run f4() - Reverse Playlist")
-    n = int(input("Input a question (1-4): "))
+    dll.addToTail(20)
+    print("(2) addToTail – Thêm một phần tử 20 CUỐI danh sách:", end=" ")
+    dll.traverse()
 
-    player.load(file_path, m)
+    dll.addToTail(27)
+    print("(2) addToTail – Thêm một phần tử 27 CUỐI danh sách:", end=" ")
+    dll.traverse()
 
-    if n == 1:
-        search_name = str(input("Enter Artist Name to search: "))
-        print("\nOUTPUT:")
-        print("State before searching:")
-        player.display()
-        found_songs = player.f1(search_name)
-        print("Search Results:")
-        if found_songs:
-            for song in found_songs:
-                print(song)
-        else:
-            print("No songs found for this artist.")
+    print("(9) searchIndex – Vị trí của node có giá trị 10:", dll.searchIndex(10))
 
-    elif n == 2:
-        print("Enter new song details for the playlist:")
-        p_id = input("  ID: ")
-        p_title = input("  Title: ")
-        p_artist = input("  Artist: ")
-        p_duration = int(input("  Duration: "))
-        song_p = Song(p_id, p_title, p_artist, p_duration)
+    p = dll.searchNode(10)
+    dll.addAfter(p, 15)
+    print("(3) addAfter – Thêm phần tử 15 SAU node có giá trị 10:", end=" ")
+    dll.traverse()
 
-        print("Enter new song details for the queue:")
-        q_id = input("  ID: ")
-        q_title = input("  Title: ")
-        q_artist = input("  Artist: ")
-        q_duration = int(input("  Duration: "))
-        song_q = Song(q_id, q_title, q_artist, q_duration)
+    print("(4) traverse – Duyệt và in toàn bộ danh sách:", end=" ")
+    dll.traverse()
 
-        print("\nOUTPUT:")
-        print("--- Before Adding ---")
-        player.display()
-        player.f2(song_p, song_q)
-        print("\n--- After Adding ---")
-        player.display()
+    print("(5) deleteFromHead – Xóa phần tử ở ĐẦU danh sách:", dll.deleteFromHead())
+    print("(6) deleteFromTail – Xóa phần tử ở CUỐI danh sách:", dll.deleteFromTail())
 
-    elif n == 3:
-        delete_song_id = str(input("Enter Song ID to remove from playlist: "))
-        print("\nOUTPUT:")
-        print("--- Before Removing ---")
-        player.display()
-        dequeued = player.f3(delete_song_id)
-        print("\n--- After Removing ---")
-        print(f"Dequeued Song: {dequeued}")
-        player.display()
-    
-    elif n == 4:
-        print("\nOUTPUT:")
-        print("--- Before Reversing ---")
-        player.display()
-        player.f4()
-        print("\n--- After Reversing ---")
-        player.display()
+    p = dll.searchNode(15)
+    print("(7) deleteAfter – Xóa node đứng SAU node có giá trị 15:", dll.deleteAfter(p))
+    print("Danh sách hiện tại:", end=" ")
+    dll.traverse()
 
-    else:
-        print("Invalid selection.")
+    dll.addToTail(5)
+    print("(2) addToTail – Thêm phần tử 5 vào cuối:", end=" ")
+    dll.traverse()
 
-# End main
-# --------------------------------
-if __name__ == "__main__":
-    main()
-# ================================
+    dll.addToTail(25)
+    print("(2) addToTail – Thêm phần tử 25 vào cuối:", end=" ")
+    dll.traverse()
+
+    print("(8) delValue – Xóa node có GIÁ TRỊ bằng 5:", dll.delValue(5))
+    print("(10) count – Đếm số lượng node trong danh sách:", dll.count())
+
+    dll.addToTail(30)
+    print("(2) addToTail – Thêm phần tử 30 vào cuối:", end=" ")
+    dll.traverse()
+
+    dll.addToTail(12)
+    print("(2) addToTail – Thêm phần tử 12 vào cuối:", end=" ")
+    dll.traverse()
+
+    dll.delAt(1)
+    print("(11) delAt – Xóa node tại vị trí index = 1:", end=" ")
+    dll.traverse()
+
+    dll.sort()
+    print("(12) sort – Sắp xếp danh sách theo thứ tự TĂNG DẦN:", end=" ")
+    dll.traverse()
+
+    node = dll.searchNode(12)
+    dll.delNode(node)
+    print("(13) delNode – Xóa TRỰC TIẾP node có giá trị 12:", end=" ")
+    dll.traverse()
+
+    print("(14) toArray – Chuyển danh sách liên kết sang mảng:", dll.toArray())
+
+    dll2 = DoublyLinkedList()
+    dll2.addToTail(1)
+    dll2.addToTail(40)
+
+    merged = dll.merge(dll2)
+    print("(15) merge – GỘP hai danh sách đã sắp xếp:", merged.toArray())
+
+    p = merged.searchNode(40)
+    merged.addBefore(p, 35)
+    print("(16) addBefore – Thêm 35 vào TRƯỚC node có giá trị 40:", end=" ")
+    merged.traverse()
+
+    merged.attach(dll2)
+    print("(17) attach – NỐI danh sách thứ hai vào CUỐI danh sách hiện tại:", end=" ")
+    merged.traverse()
+
+    print("(18) max – Tìm GIÁ TRỊ LỚN NHẤT trong danh sách:", merged.max())
+    print("(19) min – Tìm GIÁ TRỊ NHỎ NHẤT trong danh sách:", merged.min())
+    print("(20) sum – Tính TỔNG các phần tử trong danh sách:", merged.sum())
+    print("(21) avg – Tính GIÁ TRỊ TRUNG BÌNH các phần tử:", merged.avg())
+
+    print("(22) isSorted – Kiểm tra danh sách có được SẮP XẾP hay không:", merged.isSorted())
+
+    merged.insert(22)
+    print("(23) insert – Chèn giá trị 22 vào ĐÚNG VỊ TRÍ:", end=" ")
+    merged.traverse()
+
+    merged.reverse()
+    print("(24) reverse – ĐẢO NGƯỢC thứ tự danh sách:", end=" ")
+    merged.traverse()
+
+    print("(25) equals – So sánh hai danh sách có GIỐNG NHAU không:", merged.equals(dll))
+
+
+main()
+
