@@ -94,6 +94,20 @@ class SinglyLinkedList:
         tmp = current.next
         current.next = current.next.next
         return tmp
+    
+    def rec_traversal(self, current):
+        if current == None:
+            print("None")
+            return
+        print(current.data, end = " -> ")
+        self.rec_traversal(current.next)
+        return
+
+    def rec_length(self, count, current):
+        if current == None:
+            return count
+        result = self.rec_length(count + 1, current.next)
+        return result
 
 def main():
     sll = SinglyLinkedList()
@@ -117,6 +131,8 @@ def main():
     sll.traversal()
     sll.deleteAtPosition(-1)
     sll.traversal()
-    
+    sll.rec_traversal(sll.head)
+    print(sll.length())
+    print(sll.rec_length(0, sll.head))
 
 main()
