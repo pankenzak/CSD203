@@ -99,13 +99,22 @@ class PlaylistCLL:
     def add_to_playlist(self, song):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        pass
+        self.helper_fn(song) #Su dung helper_fn co san va them vao cuoi
         # ---------------------------------------------------------
 
     def search_by_artist(self, artist_name):
         found_songs = []
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
+        if self.is_empty():
+            return found_songs 
+        current = self.tail.next # con tro tai head
+        while True : # tao vong lap vo han 
+            if current.info.artist.strip().lower() == artist_name.strip().lower():# cho artist va artist_name deu in thuong de de so sanh
+                found_songs.append(current.info)
+            current = current.next 
+            if current == self.tail.next:
+                break
         pass
         # ---------------------------------------------------------
         return found_songs
@@ -138,10 +147,22 @@ class PlaylistCLL:
         # ---------------------------------------------------------
 
     def reverse_playlist(self):
-        # You should write here appropriate statements to complete this function.
-        # --------------------------------------------------------
-        pass
-        # ---------------------------------------------------------
+        if self.is_empty() or self.tail.next == self.tail:
+            return
+
+        prev = self.tail
+        current = self.tail.next
+        first = current
+
+        while True:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+            if current == first:
+                break
+
+        self.tail = first
 
     def display(self):
         print("Playlist (CLL):")
@@ -155,7 +176,7 @@ class PlaylistCLL:
                 if current == self.tail.next:
                     break
         print("=========")
-    
+        
     def helper_fn(self, song):
         new_node = Node(song)
         if self.is_empty():
