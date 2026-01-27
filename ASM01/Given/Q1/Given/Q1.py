@@ -135,17 +135,17 @@ class PlaylistCLL:
         self.tail = first
 
     def display(self):
-            print("Playlist (CLL):")
-            if self.is_empty():
-                print("Empty")
-            else:
-                current = self.tail.next
-                while True:
-                    print(current.info)
-                    current = current.next
-                    if current == self.tail.next:
-                        break
-            print("=========")
+        print("Playlist (CLL):")
+        if self.is_empty():
+            print("Empty")
+        else:
+            current = self.tail.next
+            while True:
+                print(current.info)
+                current = current.next
+                if current == self.tail.next:
+                    break
+        print("=========")
         
     def helper_fn(self, song):
         new_node = Node(song)
@@ -276,4 +276,5 @@ def main():
 if __name__ == "__main__":
     main()
 # ================================
+
 
