@@ -122,27 +122,28 @@ class PlaylistCLL:
     def remove_from_playlist(self, song_id):
         # You should write here appropriate statements to complete this function.
         # --------------------------------------------------------
-        if self.is_empty():
+        if self.is_empty():         # Nếu playlist rỗng
+            print("playlist is empty")
             return
 
-        current = self.tail.next
-        prev = self.tail
+        current = self.tail.next   # Con trỏ bắt đầu từ head (sau đuôi)
+        prev = self.tail           # prev được đặt là node trước current
 
         while True:
-            if current.info.song_id == song_id:
-                # only one node
-                if current == self.tail and current.next == self.tail:
-                    self.tail = None
-                else:
-                    prev.next = current.next
-                    if current == self.tail:
-                        self.tail = prev
+            if current.info.song_id == song_id:   # Nếu tìm thấy bài cần xóa
+                if current == self.tail and current.next == self.tail: # Nếu cái đuôi và sau cái đuôi là 1 bài -> Playlist chỉ có 1 bài
+                    self.tail = None             # thì đổi cái đuôi thành None luôn
+                else: # trường hợp tìm thấy bình thường( nhiều bài hát)
+                    prev.next = current.next      # thì next của bài hát trước bài cần xóa là bài hát tiếp theo của bài hát cần xóa
+                    if current == self.tail:      # Nếu xóa bài cuối trong playlist
+                        self.tail = prev          # đổi bài cuối của playlist thành bài hát trước đó
                 return
 
-            prev = current
-            current = current.next
+            prev = current          # chương trình duyệt chính từ đầu đến cuối
+            current = current.next  # chương trình duyệt chính từ đầu đến cuối
 
-            if current == self.tail.next:
+            if current == self.tail.next: #Nếu không tìm thấy bài hát vì chạy hết từ đầu đến sau đuôi(là head) mà vẫn không thấy thì không có vì chương trình duyệt từ bài sau bài đầu(bài đầu duyệt từ các def ở trên rồi)
+                print("do not find this song")
                 break
         # ---------------------------------------------------------
 
@@ -306,3 +307,4 @@ def main():
 if __name__ == "__main__":
     main()
 # ================================
+
