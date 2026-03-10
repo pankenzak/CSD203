@@ -1,0 +1,1 @@
+['Computer', 'A', 1500, 'Keyboard', 'B', 120, 'Mouse', 'C', 100, 'Monitor', 'D', 500, 'Tablet', 'E', 1000, 'Laptop', 'F', 2000, 'Phone', 'G', 1000,'USB', 'H', 15,'Tablet', 'I', 700,'Speaker', 'J', 60]
