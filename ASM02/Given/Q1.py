@@ -38,13 +38,35 @@ class OrderQueue:
         new_node = Node(Order(order_id, customer_name, total_price))
         # ===============================
         # start your code
-
+        if self.isEmpty():
+            self.front = new_node
+            self.length += 1
+            return
+        current = self.front
+        while current.next != None:
+            current = current.next
+        current.next = new_node
+        self.length += 1
         # end your code
 
     def remove(self, id):
         # ===============================
         # start your code
-
+        if self.isEmpty():
+            return
+            
+        if self.front.info.order_id == id:
+            self.front = self.front.next
+            self.length -= 1
+            return
+            
+        current = self.front
+        while current.next is not None and current.next.info.order_id != id:
+            current = current.next
+            
+        if current.next is not None:
+            current.next = current.next.next
+            self.length -= 1
         # end your code
 
     def display(self):
@@ -68,7 +90,15 @@ class OrderTree:
     def _insert(self, root, order):
         # ===============================
         # start your code
-
+        if root is None:
+            new_node = TreeNode(order)
+            return new_node
+        
+        if order.order_id < root.info.order_id:
+            root.left = self._insert(root.left, order)
+        elif order.order_id >= root.info.order_id:
+            root.right = self._insert(root.right, order)
+        return root
         # end your code
 
     def search(self, id):
@@ -77,7 +107,14 @@ class OrderTree:
     def _search(self, root, id):
         # ===============================
         # start your code
-
+        if root is None:
+            return None
+        if root.info.order_id == id:
+            return root.info
+        if id < root.info.order_id:
+            return self._search(root.left, id)
+        elif id > root.info.order_id:
+            return self._search(root.right, id)
         # end your code
 
     def remove(self, id):
@@ -86,7 +123,24 @@ class OrderTree:
     def _remove(self, root, id):
         # ===============================
         # start your code
-
+        if root is None:
+            return
+        if id < root.info.order_id:
+            root.left = self._remove(root.left, id)
+        elif id > root.info.order_id:
+            root.right = self._remove(root.right, id)
+        else:
+            if root.left is None and root.right is None:
+                return None
+            elif root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+            else:
+                max_left = self._findMax(root.left)
+                root.info = Order(max_left.order_id, max_left.customer_name, max_left.total_price)
+                root.left = self._remove(root.left, max_left.order_id)
+        return root
         # end your code
 
     def findMax(self):
@@ -95,7 +149,10 @@ class OrderTree:
     def _findMax(self, root):
         # ===============================
         # start your code
-
+        if root.right is None:
+            return root.info
+        result = self._findMax(root.right)
+        return result
         # end your code
 
     def display(self):
@@ -137,25 +194,35 @@ class ComputerStore:
         self.load(file_path, m)
         self.display()
 
+
     def f2(self, search_id):
         found = Order()
         # ===============================
         # start your code
-
+        result = self.order_tree.search(search_id)
+        if result is not None:
+            found = result
+        else:
+            found = None
         # end your code
         return found
     def f3(self):
         max = Order()
         # ===============================
         # start your code
-
+        result = self.order_tree.findMax()
+        if result is not None:
+            max = result
+        else:
+            max = None
         # end your code
         return max
 
     def f4(self, delete_id):
         # ===============================
         # start your code
-
+        self.order_queue.remove(delete_id) 
+        self.order_tree.remove(delete_id)
         # end your code
 
 
@@ -224,4 +291,3 @@ def main():
 if __name__ == "__main__":
     main()
 # ================================
-
