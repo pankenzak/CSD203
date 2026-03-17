@@ -7,8 +7,8 @@ Chào mừng bạn đến với kho lưu trữ bài tập và dự án môn **CS
 ## 📌 Tổng quan môn học
 Môn học cung cấp nền tảng về cách tổ chức dữ liệu hiệu quả và các thuật toán tối ưu để giải quyết các bài toán lập trình phức tạp.
 
-* **Ngôn ngữ sử dụng:** Java (hoặc C++ tùy theo bài tập cụ thể).
-* **Công cụ:** NetBeans / IntelliJ IDEA / VS Code.
+* **Ngôn ngữ sử dụng:** Python.
+* **Công cụ:** Antigravity, Thonny.
 
 ---
 
